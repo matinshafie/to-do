@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-from os import environ
+from os import getenv
 from dotenv import load_dotenv
 
-load_dotenv("../.env")
+load_dotenv(".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = environ.get('DJANGO_SECRET_KEY`')
+SECRET_KEY = getenv('DJANGO_SECRET_KEY`')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'todo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': environ.get('MYSQL_NAME'),
-        'USER': environ.get('MYSQL_USER'),
-        'HOST': environ.get('MYSQL_HOST'),
-        'PASSWORD': environ.get('MYSQL_PASSWORD'),
+        'NAME': getenv('MYSQL_NAME'),
+        'USER': getenv('MYSQL_USER'),
+        'HOST': getenv('MYSQL_HOST'),
+        'PASSWORD': getenv('MYSQL_PASSWORD'),
     }
 }
 
