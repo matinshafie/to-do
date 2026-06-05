@@ -7,4 +7,6 @@ class Task(models.Model):
     description = models.CharField(max_length=500, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks'
+        )
