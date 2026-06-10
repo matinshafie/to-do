@@ -146,6 +146,8 @@ SIMPLE_JWT = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'config.authentication.CookieJWTAuthentication',
     ),
 }
+
+CORES_ALLOW_CREDENTIALS = True
