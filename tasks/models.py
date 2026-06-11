@@ -10,3 +10,4 @@ class Task(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='tasks'
         )
     repeat = models.PositiveIntegerField(null=True)
+    due_date = models.DateField(null=True)
