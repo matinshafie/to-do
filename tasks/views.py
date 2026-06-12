@@ -6,8 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 class TaskViewSet(ModelViewSet):
     serializer_class = TaskSerializer
-    queryset = Task.objects.all()
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Task.objects.filter(pk=self.request.user.id)
+        return Task.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer: TaskSerializer):
+        return serializer.save(user=self.request.user)
