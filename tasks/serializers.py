@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Task
+from django.utils import timezone
 
 
 class CreateTaskSerializer(serializers.ModelSerializer):
@@ -14,8 +15,17 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['user', 'completed_at']
 
-class MyDayTaskSerializer(serializers.ModelSerializer):
+class UpdateTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = '__all__'
-        read_only_fields = ['user', 'completed_at']
+        fields = ['title', 'description', 'completed', 'repeat', 'due_date']
+
+    def update(self, instance: Task, validated_data: dict):
+        completed = validated_data.get('completed', instance.completed)
+        repeat = validated_data.get('repeat', instance.repeat)
+
+        if completed and not instance.completed and repeat:
+            validated_data['due_date'] += timezone.timedelta(days=repeat)
+            validated_data['completed'] = False
+
+        return super().update(instance, validated_data)
