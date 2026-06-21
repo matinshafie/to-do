@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task
+from .models import Task, List
 from django.utils import timezone
 
 
@@ -29,3 +29,10 @@ class UpdateTaskSerializer(serializers.ModelSerializer):
             validated_data['completed'] = False
 
         return super().update(instance, validated_data)
+
+
+
+class ListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = List
+        fields = ['id', 'title']

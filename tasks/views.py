@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import RetrieveModelMixin, \
     ListModelMixin, DestroyModelMixin, UpdateModelMixin
-from .serializers import TaskSerializer, CreateTaskSerializer, UpdateTaskSerializer
-from .models import Task
+from .serializers import TaskSerializer, CreateTaskSerializer, UpdateTaskSerializer, ListSerializer
+from .models import Task, List
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 
@@ -40,3 +40,14 @@ class MyDayTaskViewSet(
         if self.action in ['update', 'partial_update']:
             return UpdateTaskSerializer
         return TaskSerializer
+    
+
+class ListViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ListSerializer
+    
+    def get_queryset(self):
+        return List.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer:ListSerializer):
+        serializer.save(user=self.request.user)
