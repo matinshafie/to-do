@@ -4,7 +4,7 @@ from rest_framework.mixins import RetrieveModelMixin, \
 from .serializers import TaskSerializer, CreateTaskSerializer, UpdateTaskSerializer
 from .models import Task
 from rest_framework.permissions import IsAuthenticated
-from datetime import date
+from django.utils import timezone
 
 # Create your views here.
 class TaskViewSet(ModelViewSet):
@@ -12,7 +12,7 @@ class TaskViewSet(ModelViewSet):
     serializer_class = TaskSerializer
         
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user)
+        return Task.objects.filter(user=self.request.user).filter(list=None)
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -31,7 +31,7 @@ class MyDayTaskViewSet(
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user).filter(due_date=date.today())
+        return Task.objects.filter(user=self.request.user).filter(due_date=timezone.localdate())
     
     def perform_create(self, serializer:TaskSerializer):
         serializer.save(user=self.request.user)
