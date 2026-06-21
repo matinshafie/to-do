@@ -148,6 +148,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'config.authentication.CookieJWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.IsAuthenticated']
 }
 
 CORES_ALLOW_CREDENTIALS = True

@@ -7,18 +7,19 @@ class CreateTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-        read_only_fields = ['user', 'completed', 'completed_at']
+        read_only_fields = ['user', 'completed', 'completed_at', 'list']
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
-        read_only_fields = ['user', 'completed_at']
+        read_only_fields = ['user', 'completed_at', 'list']
 
 class UpdateTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['title', 'description', 'completed', 'repeat', 'due_date', 'list']
+        read_only_fields = ['list']
 
     def update(self, instance: Task, validated_data: dict):
         completed = validated_data.get('completed', instance.completed)
