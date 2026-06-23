@@ -35,6 +35,8 @@ class UpdateTaskSerializer(serializers.ModelSerializer):
         repeat = validated_data.get('repeat', instance.repeat)
 
         if completed and repeat:
+            if not validated_data.get('due_date'):
+                validated_data['due_date'] = timezone.now().date()
             validated_data['due_date'] += timezone.timedelta(days=repeat)
             validated_data['completed'] = False
 
