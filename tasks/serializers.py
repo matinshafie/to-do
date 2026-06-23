@@ -9,6 +9,15 @@ class CreateTaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['user', 'completed', 'completed_at', 'list']
 
+    def create(self, validated_data:dict):
+        repeat = validated_data.get('repeat')
+        due_date = validated_data.get('due_date')
+
+        if repeat and not due_date:
+            validated_data['due_date'] = timezone.now().date()
+
+        return super().create(validated_data)
+
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task

@@ -49,7 +49,15 @@ class ListViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
 class TaskListViewSet(ModelViewSet):
-    serializer_class = TaskSerializer
-
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, list=self.kwargs.get('list_pk'))
+        return Task.objects.filter(user=self.request.user, list_id=self.kwargs.get('list_pk'))
+    
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateTaskSerializer
+        elif self.action in ['update', 'partial_update']:
+            return UpdateTaskSerializer
+        return TaskSerializer
+    
+    def perform_create(self, serializer:TaskSerializer):
+        serializer.save(user=self.request.user)
