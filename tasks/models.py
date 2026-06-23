@@ -21,5 +21,8 @@ class Task(models.Model):
         )
     repeat = models.PositiveIntegerField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
-    completed_at = models.DateTimeField(null=True, blank=True)
     list = models.ForeignKey(List, models.CASCADE, related_name='tasks', blank=True, null=True)
+
+class CompletedTask(models.Model):
+    tasks = models.ForeignKey(Task, models.CASCADE, related_name='completed_tasks')
+    completed_at = models.DateTimeField(auto_now_add=True)
