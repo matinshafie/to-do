@@ -1,12 +1,16 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from .models import Task, List, CompletedTask
 from django.utils import timezone
 
 class TaskSerializer(serializers.ModelSerializer):
+    list_title = serializers.SerializerMethodField('get_list_title')
+
     class Meta:
         model = Task
-        fields = 'id', 'title', 'description', 'created_at', 'completed', 'repeat', 'due_date', 'list'
+        fields = 'id', 'title', 'description', 'created_at', 'completed', 'repeat', 'due_date', 'list_title'
+
+    def get_list_title(self, task:Task) -> str:
+        return task.list.title if task.list else None
 
     def get_fields(self):
         fields = super().get_fields()
