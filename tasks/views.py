@@ -10,7 +10,7 @@ class TaskViewSet(ModelViewSet):
     serializer_class = TaskSerializer
         
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user).select_related('list').all()
+        return Task.objects.filter(user=self.request.user).select_related('list')
     
     def perform_create(self, serializer:TaskSerializer):
         serializer.save(user=self.request.user)
@@ -22,7 +22,7 @@ class MyDayTaskViewSet(
     serializer_class = TaskSerializer
 
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, due_date=timezone.localdate()).select_related('list').all()
+        return Task.objects.filter(user=self.request.user, due_date=timezone.localdate()).select_related('list')
     
     def perform_create(self, serializer:TaskSerializer):
         serializer.save(user=self.request.user)
@@ -32,7 +32,7 @@ class ListViewSet(ModelViewSet):
     serializer_class = ListSerializer
     
     def get_queryset(self):
-        return List.objects.filter(user=self.request.user)
+        return List.objects.filter(user=self.request.user).prefetch_related('task')
     
     def perform_create(self, serializer:ListSerializer):
         serializer.save(user=self.request.user)
