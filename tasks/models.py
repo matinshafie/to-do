@@ -24,5 +24,5 @@ class Task(models.Model):
     list = models.ForeignKey(List, models.CASCADE, related_name='tasks', blank=True, null=True)
 
 class CompletedTask(models.Model):
-    tasks = models.ForeignKey(Task, models.CASCADE, related_name='completed_tasks')
+    task = models.ForeignKey(Task, models.CASCADE, related_name='completed_tasks')
     completed_at = models.DateTimeField(auto_now_add=True)
