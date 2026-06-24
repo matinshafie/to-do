@@ -10,7 +10,7 @@ class TaskViewSet(ModelViewSet):
     serializer_class = TaskSerializer
         
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, list=None)
+        return Task.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer:TaskSerializer):
         serializer.save(user=self.request.user)
