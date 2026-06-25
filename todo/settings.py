@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'rest_framework',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'rest_framework_simplejwt',
     'djoser',
     'tasks',
@@ -150,7 +152,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'config.authentication.CookieJWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.IsAuthenticated']
+    'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 CORES_ALLOW_CREDENTIALS = True
@@ -158,3 +161,13 @@ CORES_ALLOW_CREDENTIALS = True
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    'TITLE': 'todo',
+    'DESCRIPTION': 'a task manager',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
