@@ -9,8 +9,6 @@ from django.utils import timezone
 def user(db) -> AbstractUser:
     return get_user_model().objects.create_user(
         username='testuser', email='test@example.com', password='testpass123'
-
-        
         )
 
 @pytest.fixture
