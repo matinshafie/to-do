@@ -21,3 +21,8 @@ class TestListModel:
         after = timezone.now()
 
         assert before <= list_obj.created_at <= after
+
+    def test_list_max_length(self, user:AbstractUser):
+        list_obj = List.objects.create(title='x'*255, user=user)
+        
+        assert len(list_obj.title) == 255
