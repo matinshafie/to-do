@@ -26,3 +26,13 @@ class TestListModel:
         task_list.delete()
 
         assert not Task.objects.filter(id=task_id).exists()
+
+    def test_user_deletion_cascade_all_lists(self, user:AbstractUser):
+        lst = List.objects.create(title='list2', user=user)
+        lst_id = lst.id
+
+
+        user.delete()
+
+
+        assert not List.objects.filter(id=lst_id).exists()
