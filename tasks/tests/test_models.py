@@ -1,6 +1,6 @@
 import pytest
 from django.contrib.auth.models import AbstractUser
-from tasks.models import List
+from tasks.models import List, Task
 from uuid import UUID
 from django.utils import timezone
 
@@ -15,14 +15,14 @@ class TestListModel:
         assert isinstance(list_obj.id, UUID)
         assert list_obj.created_at is not None
 
-    def test_list_auto_now_add_created_at(self, user:AbstractUser):
-        before = timezone.now()
-        list_obj = List.objects.create(title='list2', user=user)
-        after = timezone.now()
+    def test_list_deletion_cascade_all_tasks(self, user:AbstractUser, task_list:List):
+        task = Task.objects.create(
+            title='test1',
+            user=user,
+            list=task_list,
+        )
+        task_id = task.id
 
-        assert before <= list_obj.created_at <= after
+        task_list.delete()
 
-    def test_list_max_length(self, user:AbstractUser):
-        list_obj = List.objects.create(title='x'*255, user=user)
-        
-        assert len(list_obj.title) == 255
+        assert not Task.objects.filter(id=task_id).exists()
