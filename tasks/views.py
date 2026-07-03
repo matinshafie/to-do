@@ -32,7 +32,7 @@ class ListViewSet(ModelViewSet):
     serializer_class = ListSerializer
     
     def get_queryset(self):
-        return List.objects.filter(user=self.request.user).prefetch_related('task')
+        return List.objects.filter(user=self.request.user).prefetch_related('tasks')
     
     def perform_create(self, serializer:ListSerializer):
         serializer.save(user=self.request.user)
