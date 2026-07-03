@@ -5,12 +5,18 @@ from tasks.models import Task, List
 from django.utils import timezone
 from rest_framework.test import APIClient
 
+User = get_user_model()
+
 
 @pytest.fixture
 def user(db) -> AbstractUser:
-    return get_user_model().objects.create_user(
+    return User.objects.create_user(
         username='testuser', email='test@example.com', password='testpass123'
         )
+
+@pytest.fixture
+def other_user(db) -> AbstractUser:
+    return User.objects.create_user(username='othertestuser', email='othertest@example.com', password='othertestpass123')
 
 @pytest.fixture
 def task_list(db, user:AbstractUser) -> List:
