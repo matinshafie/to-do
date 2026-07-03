@@ -12,13 +12,17 @@ class TaskSerializer(serializers.ModelSerializer):
     def get_list_title(self, task:Task) -> str:
         return task.list.title if task.list else None
 
-    def get_fields(self):
+    def get_fields(self) -> dict[str, Task]:
         fields = super().get_fields()
-        if self.context.get('request').method == 'POST':
+        request = self.context.get('request')
+
+        if not request:
+            return fields
+
+        if request.method == 'POST':
             fields.pop('completed', None)
-            fields.pop('list', None)
         
-        elif self.context.get('request').method in ('PUT', 'PATCH'):
+        elif request.method in ('PUT', 'PATCH'):
             fields.pop('user', None)
 
         return fields
