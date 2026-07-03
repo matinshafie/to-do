@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from tasks.models import Task, List
 from django.utils import timezone
+from rest_framework.test import APIClient
 
 
 @pytest.fixture
@@ -25,3 +26,12 @@ def task(db, user:AbstractUser, task_list:List) -> Task:
         due_date=timezone.now().date(), 
         list=task_list
         )
+
+@pytest.fixture
+def api_client() -> APIClient:
+    return APIClient()
+
+@pytest.fixture
+def authenticated_client(api_client:APIClient, user:AbstractUser) -> APIClient:
+    api_client.force_authenticate(user=user)
+    return api_client
