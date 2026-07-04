@@ -11,3 +11,7 @@ wheels/
 
 # my apps
 .env
+.env
+.venv
+*_cache
+*/__pycache__

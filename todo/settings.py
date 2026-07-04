@@ -135,17 +135,18 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'config.BaseUser'
 
+AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 15
+AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24 * 7
+AUTH_COOKIE_SECURE = not DEBUG
+AUTH_COOKIE_HTTP_ONLY = True
+AUTH_COOKIE_SAMESITE = "Lax"
+
 # settings.py snippets
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    # Settings to enforce secure cookie usage
-    'AUTH_COOKIE': 'access_token',
-    'AUTH_COOKIE_REFRESH': 'refresh_token',
-    'AUTH_COOKIE_HTTP_ONLY': True,
-    'AUTH_COOKIE_SECURE': True,  # Set to False only for local development
-    'AUTH_COOKIE_SAMESITE': 'Lax',
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 REST_FRAMEWORK = {
