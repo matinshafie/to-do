@@ -4,10 +4,11 @@ from django.utils import timezone
 
 class TaskSerializer(serializers.ModelSerializer):
     list_title = serializers.SerializerMethodField('get_list_title')
+    skip = serializers.BooleanField(write_only=True, required=False, default=False)
 
     class Meta:
         model = Task
-        fields = 'id', 'title', 'description', 'created_at', 'completed', 'repeat', 'due_date', 'list_title'
+        fields = 'id', 'title', 'description', 'created_at', 'completed', 'repeat', 'due_date', 'list_title', 'skip'
 
     def get_list_title(self, task:Task) -> str:
         return task.list.title if task.list else None
@@ -21,15 +22,39 @@ class TaskSerializer(serializers.ModelSerializer):
 
         if request.method == 'POST':
             fields.pop('completed', None)
+            fields.pop('skip', None)
         
+
         elif request.method in ('PUT', 'PATCH'):
             fields.pop('user', None)
+
+            instance = self.instance
+            can_skip = (
+                instance is not None 
+                and instance.repeat 
+                and instance.due_date
+                and instance.due_date < timezone.localdate()
+                )
+            if not can_skip:
+                fields.pop('skip', None)
 
         return fields
 
     def update(self, instance: Task, validated_data: dict):
+        skip = validated_data.pop('skip', False)
         completed = validated_data.get('completed')
         repeat = validated_data.get('repeat')
+
+        if skip:
+            today = timezone.localdate()
+            due_date = instance.due_date or today
+
+            if due_date < today:
+                days_overdue = (today - due_date).days
+                intervals_to_add = -(-days_overdue // repeat)  # ceiling division
+                due_date += timezone.timedelta(days=repeat * intervals_to_add)
+
+            validated_data['due_date'] = due_date
 
         if completed and not instance.completed:
             CompletedTask.objects.create(task=instance)
