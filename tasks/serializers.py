@@ -81,3 +81,33 @@ class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
         fields = ['id', 'title']
+
+class TaskMinimalSerializer(serializers.ModelSerializer):
+    list_title = serializers.SerializerMethodField('get_list_title')
+
+    class Meta:
+        model = Task
+        fields = 'id', 'title', 'list_title', 'due_date'
+
+    def get_list_title(self, task:Task) -> str:
+        return task.list.title
+
+class CompletedTaskSerializer(serializers.ModelSerializer):
+    task = TaskMinimalSerializer()
+    task_id = serializers.PrimaryKeyRelatedField(
+        queryset=Task.objects.all(), source='task', write_only=True, required=False
+        )
+
+    class Meta:
+        model = CompletedTask
+        fields = 'id', 'completed_at', 'task', 'task_id'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get('request')
+
+        if request:
+            self.fields['task_id'].queryset = Task.objects.filter(user=request.user)
+
+        if self.instance:
+            self.fields.pop('task_id', None)
