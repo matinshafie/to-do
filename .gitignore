@@ -5,6 +5,7 @@ build/
 dist/
 wheels/
 *.egg-info
+*/__pycache__
 
 # Virtual environments
 .venv
@@ -14,4 +15,7 @@ wheels/
 .env
 .venv
 *_cache
-*/__pycache__
+frontend/
+.dockerignore
+docker*
+entrypoint.sh

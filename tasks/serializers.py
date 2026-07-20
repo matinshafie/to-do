@@ -10,7 +10,7 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = 'id', 'title', 'description', 'created_at', 'completed', 'repeat', 'due_date', 'list_title', 'skip'
 
-    def get_list_title(self, task:Task) -> str:
+    def get_list_title(self, task:Task) -> str | None:
         return task.list.title if task.list else None
 
     def get_fields(self) -> dict[str, Task]:
@@ -89,8 +89,8 @@ class TaskMinimalSerializer(serializers.ModelSerializer):
         model = Task
         fields = 'id', 'title', 'list_title', 'due_date'
 
-    def get_list_title(self, task:Task) -> str:
-        return task.list.title
+    def get_list_title(self, task:Task) -> str | None:
+        return task.list.title if task.list else None
 
 class CompletedTaskSerializer(serializers.ModelSerializer):
     task = TaskMinimalSerializer()
