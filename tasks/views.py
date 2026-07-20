@@ -22,7 +22,7 @@ class MyDayTaskViewSet(
     serializer_class = TaskSerializer
 
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, due_date=timezone.localdate()).select_related('list')
+        return Task.objects.filter(user=self.request.user, due_date=timezone.now().date()).select_related('list')
 
     def perform_update(self, serializer:TaskSerializer):
         serializer.save(user=self.request.user)
@@ -62,7 +62,7 @@ class MyDayCompletedTaskViewSet(
 
     def get_queryset(self):
         return CompletedTask.objects.filter(
-            task__user=self.request.user, completed_at__date=timezone.localdate()
+            task__user=self.request.user, completed_at__date=timezone.now().date()
             ).select_related('task')
     
     def perform_update(self, serializer:TaskSerializer):

@@ -33,7 +33,7 @@ class TaskSerializer(serializers.ModelSerializer):
                 instance is not None 
                 and instance.repeat 
                 and instance.due_date
-                and instance.due_date < timezone.localdate()
+                and instance.due_date < timezone.now().date()
                 )
             if not can_skip:
                 fields.pop('skip', None)
@@ -46,7 +46,7 @@ class TaskSerializer(serializers.ModelSerializer):
         repeat = validated_data.get('repeat')
 
         if skip:
-            today = timezone.localdate()
+            today = timezone.now().date()
             due_date = instance.due_date or today
 
             if due_date < today:
