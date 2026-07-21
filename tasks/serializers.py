@@ -87,13 +87,13 @@ class TaskMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = 'id', 'title', 'list_title', 'due_date'
+        fields = 'id', 'title', 'list_title', 'due_date', 'repeat'
 
     def get_list_title(self, task:Task) -> str | None:
         return task.list.title if task.list else None
 
 class CompletedTaskSerializer(serializers.ModelSerializer):
-    task = TaskMinimalSerializer()
+    task = TaskMinimalSerializer(read_only=True)
     task_id = serializers.PrimaryKeyRelatedField(
         queryset=Task.objects.all(), source='task', write_only=True, required=False
         )

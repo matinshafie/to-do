@@ -48,7 +48,10 @@ class TaskListViewSet(ModelViewSet):
     def perform_create(self, serializer:TaskSerializer):
         serializer.save(user=self.request.user, list_id=self.kwargs['list_pk'])
 
-class CompletedTaskViewSet(ModelViewSet):
+class CompletedTaskViewSet(
+    RetrieveModelMixin, ListModelMixin, 
+    DestroyModelMixin, GenericViewSet
+    ):
     serializer_class = CompletedTaskSerializer
 
     def get_queryset(self):
@@ -56,7 +59,7 @@ class CompletedTaskViewSet(ModelViewSet):
     
 class MyDayCompletedTaskViewSet(
     RetrieveModelMixin, ListModelMixin, 
-    DestroyModelMixin, UpdateModelMixin, GenericViewSet
+    DestroyModelMixin, GenericViewSet
     ):
     serializer_class = CompletedTaskSerializer
 
@@ -64,11 +67,11 @@ class MyDayCompletedTaskViewSet(
         return CompletedTask.objects.filter(
             task__user=self.request.user, completed_at__date=timezone.now().date()
             ).select_related('task')
-    
-    def perform_update(self, serializer:TaskSerializer):
-        serializer.save(user=self.request.user)
 
-class CompletedTaskListViewSet(ModelViewSet):
+class CompletedTaskListViewSet(
+    RetrieveModelMixin, ListModelMixin, 
+    DestroyModelMixin, GenericViewSet
+    ):
     serializer_class = CompletedTaskSerializer
 
     def get_queryset(self):
