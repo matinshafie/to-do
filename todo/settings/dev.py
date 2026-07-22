@@ -31,8 +31,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': getenv('MYSQL_DATABASE'),
-        'USER': getenv('MYSQL_USER'),
-        'HOST': getenv('MYSQL_HOST'),
+        'USER': 'root',
+        'HOST': 'localhost',
         'PASSWORD': getenv('MYSQL_ROOT_PASSWORD'),
     }
 }

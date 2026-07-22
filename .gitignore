@@ -16,6 +16,3 @@ wheels/
 .venv
 *_cache
 frontend/
-.dockerignore
-docker*
-entrypoint.sh

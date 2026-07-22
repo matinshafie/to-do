@@ -1,0 +1,17 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+*.pyo
+*_cache
+.env
+.env.*
+!.env.example
+staticfiles
+mediafiles
+uv.lock.bak
+README.md
+.python-version
+pytest.ini
+tasks/tests

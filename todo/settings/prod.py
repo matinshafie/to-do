@@ -13,7 +13,7 @@ INSTALLED_APPS += [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': getenv('MYSQL_NAME'),
+        'NAME': getenv('MYSQL_DATABASE'),
         'USER': getenv('MYSQL_USER'),
         'HOST': getenv('MYSQL_HOST'),
         'PASSWORD': getenv('MYSQL_PASSWORD'),
